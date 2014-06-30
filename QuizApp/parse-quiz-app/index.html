@@ -1,0 +1,146 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+</head>
+
+<body>
+
+  <div id="main">
+    <h1>QUIZ THINGY</h1>
+
+    <div>
+      <h1>Surgeon Quiz</h1>
+    </div>
+    <div class="questions">
+      <p>Enter your name:</p>
+     <form id="myform"> 
+       <input type="text" name="myanswer"> 
+    </form> 
+    </div>
+    <div class="questions">
+      <p>1. Does Dennis Chen like it up the butt?</p>
+      <form class="options">
+        <input class="option" type="radio" name="question2" value=1>Yes<br>
+        <input class="option" type="radio" name="question2" value=1>Yes<br>
+        <input class="option" type="radio" name="question2" value=1>Yes<br>
+        <input class="option" type="radio" name="question2" value=1>Yes</br>
+      </form>
+    </div>
+    <div class="questions">
+      <p>2. Does Richard Ting like it up the butt?</p>
+      <form class="options">
+        <input class="option" type="radio" name="question3" value=1>Yes<br>
+        <input class="option" type="radio" name="question3" value=1>Yes<br>
+        <input class="option" type="radio" name="question3" value=1>Yes<br>
+        <input class="option" type="radio" name="question3" value=1>Yes<br>
+      </form>
+    </div>
+    <div class="questions">
+      <p>3. Does Michael Chang like it up the butt?</p>
+      <form class="options">
+        <input class="option" type="radio" name="question4" value=1>Yes<br>
+        <input class="option" type="radio" name="question4" value=1>Yes<br>
+        <input class="option" type="radio" name="question4" value=1>Yes<br>
+        <input class="option" type="radio" name="question4" value=1>Yes<br>
+      </form>
+    </div>
+    <div class="questions">
+      <p>4. Does Winson Dao like it up the butt?</p>
+      <form>
+        <input class="option" type="radio" name="question5" value=1>Yes<br>
+        <input class="option" type="radio" name="question5" value=1>Yes<br>
+        <input class="option" type="radio" name="question5" value=1>Yes<br>
+        <input class="option" type="radio" name="question5" value=1>Yes<br>
+      </form>
+    </div>
+    <div class="questions">
+      <p>5. Does Ivan Seto like it up the butt?</p>
+      <form>
+        <input class="option" type="radio" name="question6" value=1>No<br>
+        <input class="option" type="radio" name="question6" value=1>No<br>
+        <input class="option" type="radio" name="question6" value=1>No<br>
+        <input class="option" type="radio" name="question6" value=1>No<br>
+      </form>
+    </div>
+    <br>
+    <input type="button" id='next' value="Next" onlick="sum_values()">
+
+    <script type="text/javascript">
+    Parse.initialize("ASMRRN5iWBqYCX4xmWqE4WVfFexRuVhDuEudAOgh", "ilpKJp7jgCw4L9XBQ6DEUaYVXOxy4iu8QPqEZZ7g");
+
+    $(document).ready(function(){
+      answers = new Object();
+      $('.option').change(function(){
+        var answer = ($(this).attr('value'))
+        var question = ($(this).attr('name'))
+        answers[question] = answer
+      })
+
+      //var item1 = document.getElementById('questions');
+
+      var totalQuestions = $('.questions').size();
+      var currentQuestion = 0;
+      $questions = $('.questions');
+      $questions.hide();
+      $($questions.get(currentQuestion)).fadeIn();
+      $('#next').click(function(){
+        $($questions.get(currentQuestion)).fadeOut(function(){
+          currentQuestion = currentQuestion + 1;
+          if (currentQuestion == 1){
+            var NameOfPerson = Parse.Object.extend("nameOfPerson");
+            var nameOfPerson = new NameOfPerson();
+            nameOfPerson.save({name: "test"});
+          }
+          if(currentQuestion == totalQuestions){
+           var result = sum_values()
+               //do stuff with the result
+               alert(result);
+             }else{
+              $($questions.get(currentQuestion)).fadeIn();
+            }
+          });
+      });
+    });
+
+
+function sum_values(){
+  var the_sum = 0;
+  for (questions in answers){
+    the_sum = the_sum + parseInt(answers[question])
+  }
+  return the_sum
+}
+</script>
+
+
+<script type="text/javascript">
+    //Parse.initialize("ASMRRN5iWBqYCX4xmWqE4WVfFexRuVhDuEudAOgh", "ilpKJp7jgCw4L9XBQ6DEUaYVXOxy4iu8QPqEZZ7g");
+
+    //var TestObject = Parse.Object.extend("TestObject");
+    //var testObject = new TestObject();
+    //testObject.save({foo: "bar"}).then(function(object) {
+      //alert("yay! it worked");
+    //});
+
+    //var TestObject = Parse.Object.extend("TestObject");
+    //var testObject = new TestObject();
+    //testObject.save({foo: "bar"}, {
+      //success: function(object) {
+        //$(".success").show();
+      //},
+      //error: function(model, error) {
+       // $(".error").show();
+     // }
+    //});
+</script>
+</body>
+
+</html>
