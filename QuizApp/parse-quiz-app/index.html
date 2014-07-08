@@ -23,92 +23,106 @@
   		</div>
   		<div class="questions">
   			<p>Hello, this quiz has 350 questions, directions below, blah blah blah<p>		
-  		</div>
-  		<div class="questions">
-  			<p>1. Does Dennis Chen like it up the butt?</p>
-  			<form class="options">
-  				<input class="option" type="radio" name="question1" value=1>Yes<br>
-  				<input class="option" type="radio" name="question1" value=1>Yes<br>
-  				<input class="option" type="radio" name="question1" value=1>Yes<br>
-  				<input class="option" type="radio" name="question1" value=1>Yes</br>
-  			</form>
-  		</div>
-  		<div class="questions">
-  			<p>2. Does Richard Ting like it up the butt?</p>
-  			<form class="options">
-  				<input class="option" type="radio" name="question2" value=1>Yes<br>
-  				<input class="option" type="radio" name="question2" value=1>Yes<br>
-  				<input class="option" type="radio" name="question2" value=1>Yes<br>
-  				<input class="option" type="radio" name="question2" value=1>Yes<br>
-  			</form>
-  		</div>
-  		<div class="questions">
-  			<p>3. Does Michael Chang like it up the butt?</p>
-  			<form class="options">
-  				<input class="option" type="radio" name="question3" value=1>Yes<br>
-  				<input class="option" type="radio" name="question3" value=1>Yes<br>
-  				<input class="option" type="radio" name="question3" value=1>Yes<br>
-  				<input class="option" type="radio" name="question3" value=1>Yes<br>
-  			</form>
-  		</div>
-  		<div class="questions">
-  			<p>4. Does Winson Dao like it up the butt?</p>
-  			<form>
-  				<input class="option" type="radio" name="question4" value=1>Yes<br>
-  				<input class="option" type="radio" name="question4" value=1>Yes<br>
-  				<input class="option" type="radio" name="question4" value=1>Yes<br>
-  				<input class="option" type="radio" name="question4" value=1>Yes<br>
-  			</form>
-  		</div>
-  		<div class="questions">
-  			<p>5. Does Ivan Seto like it up the butt?</p>
-  			<form>
-  				<input class="option" type="radio" name="question5" value=1>No<br>
-  				<input class="option" type="radio" name="question5" value=1>No<br>
-  				<input class="option" type="radio" name="question5" value=1>No<br>
-  				<input class="option" type="radio" name="question5" value=1>No<br>
-  			</form>
-  		</div>
-  		<br>
-  		<input type="button" id='next' value="Next" onlick="sum_values()">
+  			</div>
 
-  		<script type="text/javascript">
-  			Parse.initialize("ASMRRN5iWBqYCX4xmWqE4WVfFexRuVhDuEudAOgh", "ilpKJp7jgCw4L9XBQ6DEUaYVXOxy4iu8QPqEZZ7g");
 
-  			$(document).ready(function(){
-  				answers = new Object();
-  				$('.option').change(function(){
-  					var answer = ($(this).attr('value'))
-  					var question = ($(this).attr('name'))
-  					answers[question] = answer
-  				})
+  			<div class="questions">
+  				<p><b id='questionText'>test</b></p>
+  				<form class="options">
+  					<input class="option" type="text" name="question" id="answerInput"><br>
+  				</form>
+  			</div>
+  			
+  			<br>
+  			<input type="button" id='next' value="Next" onlick="sum_values()">
+
+  			<script type="text/javascript">
+  				Parse.initialize("ASMRRN5iWBqYCX4xmWqE4WVfFexRuVhDuEudAOgh", "ilpKJp7jgCw4L9XBQ6DEUaYVXOxy4iu8QPqEZZ7g");
+
+  				$(document).ready(function(){
+  					answers = new Object();
+  					$('.option').change(function(){
+  						var answer = ($(this).attr('value'))
+  						var question = ($(this).attr('name'))
+  						answers[question] = answer
+  					})
 
       //var item1 = document.getElementById('questions');
 
       var totalQuestions = $('.questions').size();
       var currentQuestion = 0;
+      var questionNumber = 2;
       $questions = $('.questions');
       $questions.hide();
       $($questions.get(currentQuestion)).fadeIn();
       $('#next').click(function(){
       	$($questions.get(currentQuestion)).fadeOut(function(){
-      		currentQuestion = currentQuestion + 1;
+      		if (currentQuestion<2){
+      			currentQuestion = currentQuestion + 1;
+      		}
       		if (currentQuestion == 1){
       			var NameOfPerson = Parse.Object.extend("nameOfPerson");
       			var nameOfPerson = new NameOfPerson();
       			var input = document.getElementById("userInput").value;
       			nameOfPerson.save({name: input});
       		}
-      		if(currentQuestion == totalQuestions){
-      			var result = sum_values()
+      		if (currentQuestion>1){
+      			var questionArray = ["The [thoracic] and [sacral] portions of the vertebral column are considered [kyphotic] curves.", "The [cervical] and [lumbar] portions of the vertebral column are considered [lordotic] curves.", "The most lateral projection of the [scapula] is the [acromion].", "The [coracoid] is the most anterior projection of the [scapula]."];
+      			var userInput = questionArray[questionNumber-2];
+      			
+      			var numChoices = 0;
+      			for (var i = 0, len = userInput.length; i < len; i++) {
+      				if (userInput[i] == "["){
+      					numChoices++;
+      				}
+      			}
+				//alert(numChoices);
+				//CODE HERE
+				var lBracketCount = 0;
+				var rBracketCount = 0;
+				var lBracketIndex = 0;
+				var rBracketIndex = 0;
+
+				var pickQuestion = Math.floor((Math.random() * numChoices) + 1);
+				//alert("question number " + pickQuestion);
+
+				for (var i = 0, len = userInput.length; i < len; i++) {
+					if (userInput[i] == "["){
+						lBracketCount++;
+						if (lBracketCount == pickQuestion){
+							lBracketIndex = i;
+							//alert("left bracket " + lBracketIndex);
+						}
+					}
+					
+					if (userInput[i] == "]"){
+						rBracketCount++;
+						if (rBracketCount == pickQuestion){
+							rBracketIndex = i;
+							//alert("right bracket " + rBracketIndex);
+						}
+					}
+				}
+
+				var answerText = userInput.slice(lBracketIndex+1,rBracketIndex);
+				alert("answer is " + answerText);
+				userInput = userInput.slice(0,lBracketIndex) + " _________ " + userInput.slice(rBracketIndex+1,userInput.length);
+				document.getElementById('questionText').innerHTML = userInput;
+
+				var answer = document.getElementById("answerInput").value;
+
+				questionNumber++;
+			}
+			if(currentQuestion == totalQuestions){
+				var result = sum_values()
                //do stuff with the result
-               alert(result);
+               //alert(result);
            }else{
            	$($questions.get(currentQuestion)).fadeIn();
            }
        });
-      });
-  });
+});
+});
 
 
   function sum_values(){
