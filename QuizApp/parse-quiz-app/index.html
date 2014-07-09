@@ -391,7 +391,7 @@
 				var questionNumber;
 				var currentQuestion;
 				var questionArray;
-				var userInput;
+				var questionText;
 				var answerText;
 				var answer;
 
@@ -425,16 +425,15 @@
 							if (currentQuestion>1){
 								//questionArray = ["The [thoracic] and [sacral] portions of the vertebral column are considered [kyphotic] curves.", "The [cervical] and [lumbar] portions of the vertebral column are considered [lordotic] curves.", "The most lateral projection of the [scapula] is the [acromion].", "The [coracoid] is the most anterior projection of the [scapula]."];
 								questionArray = splitResult;
-								userInput = questionArray[questionNumber-2];
+								questionText = questionArray[questionNumber-2];
 
 								var numChoices = 0;
-								for (var i = 0, len = userInput.length; i < len; i++) {
-									if (userInput[i] == "["){
+								for (var i = 0, len = questionText.length; i < len; i++) {
+									if (questionText[i] == "["){
 										numChoices++;
 									}
 								}
 			//alert(numChoices);
-			//CODE HERE
 			var lBracketCount = 0;
 			var rBracketCount = 0;
 			var lBracketIndex = 0;
@@ -443,8 +442,8 @@
 			var pickQuestion = Math.floor((Math.random() * numChoices) + 1);
 			//alert("question number " + pickQuestion);
 
-			for (var i = 0, len = userInput.length; i < len; i++) {
-				if (userInput[i] == "["){
+			for (var i = 0, len = questionText.length; i < len; i++) {
+				if (questionText[i] == "["){
 					lBracketCount++;
 					if (lBracketCount == pickQuestion){
 						lBracketIndex = i;
@@ -452,7 +451,7 @@
 					}
 				}
 				
-				if (userInput[i] == "]"){
+				if (questionText[i] == "]"){
 					rBracketCount++;
 					if (rBracketCount == pickQuestion){
 						rBracketIndex = i;
@@ -461,10 +460,16 @@
 				}
 			}
 
-			answerText = userInput.slice(lBracketIndex+1,rBracketIndex);
+			answerText = questionText.slice(lBracketIndex+1,rBracketIndex);
 			//alert("answer is " + answerText);
-			userInput = userInput.slice(0,lBracketIndex) + " ___________ " + userInput.slice(rBracketIndex+1,userInput.length);
-			document.getElementById('questionText').innerHTML = userInput;
+			questionText = questionText.slice(0,lBracketIndex) + " __________ " + questionText.slice(rBracketIndex+1,questionText.length);
+
+			for (var i = 0, len = questionText.length; i < len; i++) {
+				if ((questionText[i] == "[") || (questionText[i] == "]")){
+					questionText = questionText.substr(0,i) + questionText.substr(i+1);
+				}
+			}
+			document.getElementById('questionText').innerHTML = questionText;
 
 			answer = document.getElementById("answerInput").value;
 
@@ -488,11 +493,11 @@ function nextQuestionClick(){
 
 		var answer = document.getElementById("answerInput").value;
 		if (answer == answerText){
-			alert("you're right!!");
+			//alert("you're right!!");
 			correctAnswer = true;
 		}
 		else {
-			alert ("you're wrong!!");
+			//alert ("you're wrong!!");
 			correctAnswer = false;
 		};
 		var problemNumberSave = questionNumber-2;
@@ -505,27 +510,6 @@ function nextQuestionClick(){
 }
 </script>
 
-
-<script type="text/javascript">
-//Parse.initialize("ASMRRN5iWBqYCX4xmWqE4WVfFexRuVhDuEudAOgh", "ilpKJp7jgCw4L9XBQ6DEUaYVXOxy4iu8QPqEZZ7g");
-
-//var TestObject = Parse.Object.extend("TestObject");
-//var testObject = new TestObject();
-//testObject.save({foo: "bar"}).then(function(object) {
-  //alert("yay! it worked");
-//});
-
-//var TestObject = Parse.Object.extend("TestObject");
-//var testObject = new TestObject();
-//testObject.save({foo: "bar"}, {
-  //success: function(object) {
-    //$(".success").show();
-  //},
-  //error: function(model, error) {
-   // $(".error").show();
- // }
-//});
-</script>
 </body>
 
 </html>
