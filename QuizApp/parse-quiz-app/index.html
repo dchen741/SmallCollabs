@@ -18,7 +18,7 @@
   		<div class="questions">
   			<p>Enter your name:</p>
   			<form id="form" onsubmit="return false;">
-  				<input type="text" id="userInput" />
+  				<input type="text" id="nameInput" />
   			</form> 
   		</div>
   		<div class="questions">
@@ -34,10 +34,20 @@
   			</div>
   			
   			<br>
-  			<input type="button" id='next' value="Next" onlick="sum_values()">
+  			<input type="button" id='next' value="Next" onclick="nextQuestionClick()">
 
   			<script type="text/javascript">
   				Parse.initialize("ASMRRN5iWBqYCX4xmWqE4WVfFexRuVhDuEudAOgh", "ilpKJp7jgCw4L9XBQ6DEUaYVXOxy4iu8QPqEZZ7g");
+
+      			var QuizInfo = Parse.Object.extend("QuizInfo");
+      			var quizInfo = new QuizInfo();
+
+  				var questionNumber;
+  				var currentQuestion;
+  				var questionArray;
+  				var userInput;
+  				var answerText;
+  				var answer;
 
   				$(document).ready(function(){
   					answers = new Object();
@@ -47,11 +57,9 @@
   						answers[question] = answer
   					})
 
-      //var item1 = document.getElementById('questions');
-
       var totalQuestions = $('.questions').size();
-      var currentQuestion = 0;
-      var questionNumber = 2;
+      currentQuestion = 0;
+      questionNumber = 2;
       $questions = $('.questions');
       $questions.hide();
       $($questions.get(currentQuestion)).fadeIn();
@@ -61,14 +69,12 @@
       			currentQuestion = currentQuestion + 1;
       		}
       		if (currentQuestion == 1){
-      			var NameOfPerson = Parse.Object.extend("nameOfPerson");
-      			var nameOfPerson = new NameOfPerson();
-      			var input = document.getElementById("userInput").value;
-      			nameOfPerson.save({name: input});
+				var input = document.getElementById("nameInput").value;
+      			quizInfo.save({"name": input});
       		}
       		if (currentQuestion>1){
-      			var questionArray = ["The [thoracic] and [sacral] portions of the vertebral column are considered [kyphotic] curves.", "The [cervical] and [lumbar] portions of the vertebral column are considered [lordotic] curves.", "The most lateral projection of the [scapula] is the [acromion].", "The [coracoid] is the most anterior projection of the [scapula]."];
-      			var userInput = questionArray[questionNumber-2];
+      			questionArray = ["The [thoracic] and [sacral] portions of the vertebral column are considered [kyphotic] curves.", "The [cervical] and [lumbar] portions of the vertebral column are considered [lordotic] curves.", "The most lateral projection of the [scapula] is the [acromion].", "The [coracoid] is the most anterior projection of the [scapula]."];
+      			userInput = questionArray[questionNumber-2];
       			
       			var numChoices = 0;
       			for (var i = 0, len = userInput.length; i < len; i++) {
@@ -104,12 +110,12 @@
 					}
 				}
 
-				var answerText = userInput.slice(lBracketIndex+1,rBracketIndex);
-				alert("answer is " + answerText);
-				userInput = userInput.slice(0,lBracketIndex) + " _________ " + userInput.slice(rBracketIndex+1,userInput.length);
+				answerText = userInput.slice(lBracketIndex+1,rBracketIndex);
+				//alert("answer is " + answerText);
+				userInput = userInput.slice(0,lBracketIndex) + " ___________ " + userInput.slice(rBracketIndex+1,userInput.length);
 				document.getElementById('questionText').innerHTML = userInput;
 
-				var answer = document.getElementById("answerInput").value;
+				answer = document.getElementById("answerInput").value;
 
 				questionNumber++;
 			}
@@ -124,13 +130,27 @@
 });
 });
 
+  function nextQuestionClick(){
+  	//document.getElementsById("answerInput").value == "";
+  	if (currentQuestion>1){
+  		var correctAnswer;
 
-  function sum_values(){
-  	var the_sum = 0;
-  	for (questions in answers){
-  		the_sum = the_sum + parseInt(answers[question])
+  		var answer = document.getElementById("answerInput").value;
+  		if (answer == answerText){
+  			alert("you're right!!");
+  			correctAnswer = true;
+  		}
+  		else {
+  			alert ("you're wrong!!");
+  			correctAnswer = false;
+  		};
+		var problemNumberSave = questionNumber-2;
+  		problemNumberSave = "p" + problemNumberSave;
+  		var obj = {};
+  		obj[problemNumberSave] = correctAnswer;
+  		quizInfo.save(obj);
   	}
-  	return the_sum
+  	document.getElementById("answerInput").value = "";
   }
 </script>
 
