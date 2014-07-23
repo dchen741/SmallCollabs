@@ -82,6 +82,7 @@
     self.b4.alpha = .3;
     self.b5.alpha = 1;
 }
+//kk
 
 
 
