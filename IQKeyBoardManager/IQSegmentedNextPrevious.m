@@ -50,7 +50,7 @@
     {
         if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
         {
-            [self setSegmentedControlStyle:UISegmentedControlStyleBar];
+            //[self setSegmentedControlStyle:UISegmentedControlStyleBar];
         }
         
 		[self setMomentary:YES];
@@ -67,6 +67,7 @@
 }
 
 //  Value has changed
+
 - (void)segmentedControlHandler:(IQSegmentedNextPrevious*)sender
 {
     //  Switching to selected segmenteIndex.

@@ -14,9 +14,12 @@
     NSString *answer;
     int currentQuestion;
     bool gotAnswerCorrect;
+    float progressBarFill;
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;
 @property (weak, nonatomic) IBOutlet UITextField *answerInputTextfield;
+@property (weak, nonatomic) IBOutlet UIProgressView *questionProgressBar;
+@property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 
 @end

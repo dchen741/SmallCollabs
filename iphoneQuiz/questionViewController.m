@@ -32,9 +32,10 @@
 	// Do any additional setup after loading the view."
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     currentQuestion = appDelegate.questionNumber;
+    progressBarFill = (float) currentQuestion/5;
+    self.progressLabel.text = [NSString stringWithFormat:@"%i of 5 questions answered",currentQuestion];
+    self.questionProgressBar.progress = progressBarFill;
     appDelegate.questionNumber++;
-    //NSLog(@"questionNumber %i",appDelegate.questionNumber);
-    //NSLog(@"%i",currentQuestion);
     NSArray *questionArray = [NSArray arrayWithObjects:@"The [thoracic] and [sacral] portions of the vertebral column are considered [kyphotic] curves.",@"The [cervical] and [lumbar] portions of the vertebral column are considered [lordotic] curves.",@"The most lateral projection of the [scapula] is the [acromion].",@"The [coracoid] is the most anterior projection of the [scapula].",@"The lateral antebrachial cutaneous nerve is a branch off the [musculocutaneous] nerve from the [lateral] cord of the brachial plexus.",nil];
     
     int numberBrackets = 0;
@@ -71,9 +72,24 @@
     
     wholeQuestion = questionArray[currentQuestion];
     answer = [questionArray[currentQuestion] substringWithRange:NSMakeRange(leftBracketIndex+1, rightBracketIndex-leftBracketIndex-1)];
-    NSLog(answer);
+    //NSLog(answer);
     //NSLog(wholeQuestion);
-    question = [questionArray[currentQuestion] stringByReplacingCharactersInRange:NSMakeRange(leftBracketIndex, rightBracketIndex-leftBracketIndex+1) withString:@"_______"];;
+    question = [questionArray[currentQuestion] stringByReplacingCharactersInRange:NSMakeRange(leftBracketIndex, rightBracketIndex-leftBracketIndex+1) withString:@"_______"];
+    
+    for (int i=0;i<[question length];i++){
+        unichar ch = [question characterAtIndex:i];
+        if ((ch == '[') || (ch == ']')){
+            question = [question stringByReplacingCharactersInRange:NSMakeRange(i, 1) withString:@""];
+        }
+    }
+
+    for (int i=0;i<[wholeQuestion length];i++){
+        unichar ch = [wholeQuestion characterAtIndex:i];
+        if ((ch == '[') || (ch == ']')){
+            wholeQuestion = [wholeQuestion stringByReplacingCharactersInRange:NSMakeRange(i, 1) withString:@""];
+        }
+    }
+
     self.questionTextView.text = question;
 }
 
@@ -87,15 +103,12 @@
         gotAnswerCorrect = true;
     }
     else gotAnswerCorrect = false;
-    
-    //NSLog(self.answerInputTextfield.text);
-    //NSLog(answer);
-    
     questionCorrectViewController *transferViewController = segue.destinationViewController;
     if([segue.identifier isEqualToString:@"questionSegue"])
     {
         transferViewController.correctAnswerString = wholeQuestion;
         transferViewController.gotAnswerCorrect = gotAnswerCorrect;
+        transferViewController.progressBarFill = progressBarFill;
     }
 }
 
