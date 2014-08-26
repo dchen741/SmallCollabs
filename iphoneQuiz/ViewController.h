@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuestionClass.h"
 
 @interface ViewController : UIViewController
 

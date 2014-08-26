@@ -13,6 +13,7 @@
     NSString *question;
     NSString *answer;
     int currentQuestion;
+    NSNumber *questionNumber;
     bool gotAnswerCorrect;
     float progressBarFill;
 }

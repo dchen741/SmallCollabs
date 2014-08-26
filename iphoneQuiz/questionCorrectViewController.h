@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuestionClass.h"
 
 @interface questionCorrectViewController : UIViewController{
-    int JOL;
+    int currentQuestion;
 }
 
 @property (strong, nonatomic) NSString *correctAnswerString;
+@property (strong, nonatomic) NSNumber *questionNumber;
+@property (strong, nonatomic) NSNumber *JOL;
 @property (nonatomic, assign) BOOL gotAnswerCorrect;
 @property (weak, nonatomic) IBOutlet UITextView *answerTextView;
 @property (weak, nonatomic) IBOutlet UILabel *correctWrongLabel;

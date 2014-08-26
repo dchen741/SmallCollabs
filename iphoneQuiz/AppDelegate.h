@@ -14,5 +14,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, assign) int questionNumber;
+@property (nonatomic,retain) NSMutableArray *tempCorrect;
+@property (nonatomic,retain) NSMutableArray *tempIncorrect;
 
 @end
